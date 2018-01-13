@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<style type="text/css">
+      html, body { height: 100%; margin: 1em; padding: 0; }
+      #nombre_camino {
+      	margin-bottom: 1em;
+      	height: 32px;
+      	width: 20em;
+      	font-size: 15px;
+        font-weight: 300;
+        text-overflow: ellipsis;
+      }
+      #map_container { height: 70%; 
+      					width: 80%;}
+      #marker {
+      	display: none;
+      }
+
+      .marker {
+      	margin-bottom: 0.2em;
+      }
+
+      .marker > button {
+      	margin-right: 0.5em;
+      }
+
+      .controls {
+        margin-top: 10px;
+        border: 1px solid transparent;
+        border-radius: 2px 0 0 2px;
+        box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        height: 32px;
+        outline: none;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+      }
+
+      #search {
+        font-family: Roboto;
+        font-size: 15px;
+        font-weight: 300;
+        margin-left: 12px;
+        padding: 0 11px 0 13px;
+        text-overflow: ellipsis;
+      }
+
+      #search:focus {
+        border-color: #4d90fe;
+      }
+
+    </style>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+    <script async defer
+      src="https://maps.googleapis.com/maps/api/js?libraries=places&callback=initMap&key=AIzaSyDG-k3rmpOA0mk1v_n8ODEURCs_aIONtlI">
+    </script>
+    <script type="text/javascript" src="main.js">
+	
+    </script>
+</head>
+<body>
+	<a href="index.html">Menu</a><br>
+	<input type="text" id="nombre_camino" class="form-control-plaintext" placeholder="Nombre del camino">
+	<input type="text" id="search" class="form-control-plaintext controls" placeholder="Lugar a buscar...">
+	<div id="map_container"></div>
+	<p><b>Listado de Puntos de Inter&eacute;s</b></p>
+	<ol id="markers_container">
+		<li id="marker" class="marker"><button type="button" class="btn btn-danger"><i class="glyphicon glyphicon-trash">Eliminar</i></button></li>
+	</ol>
+	<button type="button" id="save" class="btn btn-info">Guardar</button>
+
+</body>
+</html>
