@@ -186,39 +186,58 @@ var CAPA_CAMINOS = new google.maps.ImageMapType({
 			alert("Tiene que elegir un nombre.");
 			return;
 		}
-		var ways = JSON.parse(localStorage.getItem("ways")) || [];
-		console.log("ways", ways);
-		var edit_mode = localStorage.getItem("edit_mode") == "true";
-		var id = localStorage.getItem("way");
-		if(edit_mode && id != "false" && id){
-			for (var i = 0; i < ways.length; i++) {
-				if(ways[i].id == id){
-					ways[i] = {
-						id: id,
+		var ways = DB.getAllWays().then(function(ways){
+			console.log("ways", ways);
+			var edit_mode = localStorage.getItem("edit_mode") == "true";
+			var id = localStorage.getItem("way");
+			if(edit_mode && id != "false" && id){
+				DB.updateWay(id, {
 						name: document.getElementById('nombre_camino').value,
 						markers: markers.map(function(marker){return marker.position;})
+					}).then(function(){
+						console.log("camino guardado");
+						window.location.href = 'index.html';
+					}).catch(function(error){console.log(error);});
+				/*
+				for (var i = 0; i < ways.length; i++) {
+					if(ways[i].id == id){
+						ways[i] = {
+							id: id,
+							name: document.getElementById('nombre_camino').value,
+							markers: markers.map(function(marker){return marker.position;})
+						}
 					}
-				}
-			};
-		} else {
-			ways.push({
-				id: function(){ // Genera id único
-					var id = -1;
-					for (var i = 0; i < ways.length; i++) {
-						if(ways[i].id > id)
-							id = ways[i].id;
-					};
-					return id + 1;
-				}(),
-				name: document.getElementById('nombre_camino').value,
-				markers: markers.map(function(marker){return marker.position;})
-			});
-		}
-		localStorage.setItem('geoData', map.data);
-		localStorage.setItem("ways", JSON.stringify(ways));
-		localStorage.setItem("way", false);
-		console.log("camino guardado");
-		window.location.href = 'index.html';
+				};*/
+			} else {
+				DB.addWay({
+					name: document.getElementById('nombre_camino').value,
+					markers: markers.map(function(marker){return marker.position;})
+				}).then(function(){
+					console.log("camino guardado");
+					window.location.href = 'index.html';
+				}).catch(function(error){
+					console.log(error);
+				});
+
+				/*
+				ways.push({
+					id: function(){ // Genera id único
+						var id = -1;
+						for (var i = 0; i < ways.length; i++) {
+							if(ways[i].id > id)
+								id = ways[i].id;
+						};
+						return id + 1;
+					}(),
+					name: document.getElementById('nombre_camino').value,
+					markers: markers.map(function(marker){return marker.position;})
+				});
+				*/
+			}
+			localStorage.setItem("way", false);
+			
+		});
+		
 	});
 }
 
@@ -276,20 +295,16 @@ function addMarker(location, edit_mode){
 // Carga los markers del camino actual
 function initialize(){
 	var id = localStorage.getItem("way");
-	var ways = JSON.parse(localStorage.getItem("ways")) || [];
-	for (var i = 0; i < ways.length; i++) {
-		if(ways[i].id == id){
-			var way = ways[i];
-			document.getElementById('nombre_camino').value = way.name;
-			for (var j = 0; j < way.markers.length; j++) {
-				addMarker(way.markers[j], localStorage.getItem("edit_mode") == "true");
-			};
+	DB.getWay(id).then(function(way){
+		document.getElementById('nombre_camino').value = way.name;
+		for (var i = 0; i < way.markers.length; i++) {
+			addMarker(way.markers[i], localStorage.getItem("edit_mode") == "true");
 		}
-	};
-	if(localStorage.getItem("edit_mode") == "false"){
-		document.getElementById("nombre_camino").readOnly = true;
-		document.getElementById("save_way").className += " hide";
-	}
+		if(localStorage.getItem("edit_mode") == "false"){
+			document.getElementById("nombre_camino").readOnly = true;
+			document.getElementById("save_way").className += " hide";
+		}
+	});
 }
 
 function displayRoute(){

@@ -30,6 +30,7 @@ table td {
   firebase.initializeApp(config);
   var db = firebase.firestore();
 </script>
+<script type="text/javascript" src="db.js"></script>
 </head>
 <body>
 	<h1>WELCOME!</h1>
@@ -46,12 +47,11 @@ document.getElementById("new_way").addEventListener('click', function(el){
 	localStorage.setItem("edit_mode", true);
 });
 var table = document.getElementById('ways_list');
-var ways = JSON.parse(localStorage.getItem("ways")) || [];
-if(ways){
-	for (var i = 0; i < ways.length; i++) {
-		table.appendChild(createEntry(ways[i]));
-	};
-}
+var ways = DB.getAllWays().then(function(ways){
+		for (var i = 0; i < ways.length; i++) {
+			table.appendChild(createEntry(ways[i]));
+		};
+	});//JSON.parse(localStorage.getItem("ways")) || [];
 
 function createEntry(way){
 	var tr = document.createElement('tr');
@@ -85,17 +85,9 @@ function createEntry(way){
 	delete_link.addEventListener('click', function(el){
 		var result = confirm("¿Seguro que desea eliminar el itinerario?");
 		if(result){
-			var index = -1;
-			var ways = JSON.parse(localStorage.getItem("ways"));
-			for (var i = 0; i < ways.length; i++) {
-				if(ways[i].id == id){
-					index = i;
-					i = ways.length;
-				}
-			};
-			ways.splice(index, 1);
-			localStorage.setItem("ways", JSON.stringify(ways));
-			location.reload();
+			DB.removeWay(id).then(function(){
+				location.reload();
+			});			
 		}
 	});
 	td_name.appendChild(link);
