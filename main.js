@@ -11,10 +11,10 @@ function initMap() {
 	directionsService = new google.maps.DirectionsService();
 	directionsDisplay = new google.maps.DirectionsRenderer({suppressMarkers: true, draggable: localStorage.getItem("edit_mode") == "true", preserveViewport: true});
 	geocoder = new google.maps.Geocoder();
-	var miLatlng = new google.maps.LatLng(39.5, -3);//43.354810,-5.851805);
+	var miLatlng = new google.maps.LatLng(39.5, -3);
 	var misOpciones = {
 	  center: miLatlng,
-	  zoom: 6,//14,
+	  zoom: 6,
 	  mapTypeId: google.maps.MapTypeId.ROADMAP
 	};
   map = new google.maps.Map(document.getElementById("map_container"), misOpciones);
@@ -148,7 +148,6 @@ var CAPA_CAMINOS = new google.maps.ImageMapType({
   	var input = (document.getElementById('search'));
 	var types = document.getElementById('type-selector');
 	map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
-	//map.controls[google.maps.ControlPosition.TOP_LEFT].push(types);
 
 	var autocomplete = new google.maps.places.Autocomplete(input);
 	autocomplete.bindTo('bounds', map);
@@ -186,6 +185,7 @@ var CAPA_CAMINOS = new google.maps.ImageMapType({
 			alert("Tiene que elegir un nombre.");
 			return;
 		}
+		loader.show();
 		var ways = DB.getAllWays().then(function(ways){
 			console.log("ways", ways);
 			var edit_mode = localStorage.getItem("edit_mode") == "true";
@@ -198,16 +198,6 @@ var CAPA_CAMINOS = new google.maps.ImageMapType({
 						console.log("camino guardado");
 						window.location.href = 'index.html';
 					}).catch(function(error){console.log(error);});
-				/*
-				for (var i = 0; i < ways.length; i++) {
-					if(ways[i].id == id){
-						ways[i] = {
-							id: id,
-							name: document.getElementById('nombre_camino').value,
-							markers: markers.map(function(marker){return marker.position;})
-						}
-					}
-				};*/
 			} else {
 				DB.addWay({
 					name: document.getElementById('nombre_camino').value,
@@ -218,21 +208,6 @@ var CAPA_CAMINOS = new google.maps.ImageMapType({
 				}).catch(function(error){
 					console.log(error);
 				});
-
-				/*
-				ways.push({
-					id: function(){ // Genera id único
-						var id = -1;
-						for (var i = 0; i < ways.length; i++) {
-							if(ways[i].id > id)
-								id = ways[i].id;
-						};
-						return id + 1;
-					}(),
-					name: document.getElementById('nombre_camino').value,
-					markers: markers.map(function(marker){return marker.position;})
-				});
-				*/
 			}
 			localStorage.setItem("way", false);
 			
@@ -295,6 +270,10 @@ function addMarker(location, edit_mode){
 // Carga los markers del camino actual
 function initialize(){
 	var id = localStorage.getItem("way");
+	if(id == "false"){
+		loader.hide();
+		return;
+	}
 	DB.getWay(id).then(function(way){
 		document.getElementById('nombre_camino').value = way.name;
 		for (var i = 0; i < way.markers.length; i++) {
@@ -304,6 +283,7 @@ function initialize(){
 			document.getElementById("nombre_camino").readOnly = true;
 			document.getElementById("save_way").className += " hide";
 		}
+		loader.hide();
 	});
 }
 

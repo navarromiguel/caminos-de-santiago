@@ -2,6 +2,7 @@
 <html>
 <head>
 	<title>Itinerario</title>
+	<link rel="stylesheet" type="text/css" href="loader.css">
 	<style type="text/css">
       html, body { height: 100%; margin: 1em; padding: 0; }
       .hide {
@@ -84,14 +85,19 @@
 	<script type="text/javascript" src="db.js"></script>
     <script type="text/javascript" src="main.js">
     </script>
+    <script type="text/javascript" src="loader.js"></script>
 </head>
 <body>
-	<a href="index.html" onclick="goToMenu()">Menu</a><br>
-	Nombre: <input type="text" id="nombre_camino" class="form-control-plaintext" placeholder="Nombre del camino"><button type="button" id="save_way" class="btn btn-info">Guardar</button>
-	<input type="text" id="search" class="form-control-plaintext controls" placeholder="Lugar a buscar...">
-	<div id="map_container"></div>
-	<p><b>Listado de Puntos de Inter&eacute;s</b></p>
-	<ol id="markers_container">
+	<div class="preload">
+		<img src="http://i.imgur.com/KUJoe.gif">
+	</div>
+
+	<a class="content" href="index.html" onclick="goToMenu()">Menu</a><br>
+	<span class="content">Nombre: </span><input type="text" id="nombre_camino" class="form-control-plaintext content" placeholder="Nombre del camino"><button type="button" id="save_way" class="content btn btn-info">Guardar</button>
+	<input type="text" id="search" class="form-control-plaintext controls content" placeholder="Lugar a buscar...">
+	<div class="content" id="map_container"></div>
+	<p class="content"><b>Listado de Puntos de Inter&eacute;s</b></p>
+	<ol class="content" id="markers_container">
 		<li id="marker" class="marker"><button type="button" class="btn btn-danger"><i class="glyphicon glyphicon-trash">Eliminar</i></button></li>
 	</ol>
 

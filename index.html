@@ -5,6 +5,7 @@
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="loader.css">
 <style type="text/css">
 html, body { height: 100%; margin: 1em; padding: 0; }
 table {
@@ -31,14 +32,19 @@ table td {
   var db = firebase.firestore();
 </script>
 <script type="text/javascript" src="db.js"></script>
+<script type="text/javascript" src="loader.js"></script>
 </head>
 <body>
-	<h1>WELCOME!</h1>
-	<table>
+	<div class="preload">
+		<img src="http://i.imgur.com/KUJoe.gif">
+	</div>
+
+	<h1 class="content">WELCOME!</h1>
+	<table class="content">
 		<thead><th>Nombre</th><th></th><th></th></thead>
 		<tbody id="ways_list"></tbody>
 	</table>
-	<button id="new_way" class="btn btn-info"><a href="camino.html">Añadir itinerario</a></button>
+	<button id="new_way" class="btn btn-info content"><a href="camino.html">Añadir itinerario</a></button>
 
 
 <script type="text/javascript">
@@ -51,6 +57,7 @@ var ways = DB.getAllWays().then(function(ways){
 		for (var i = 0; i < ways.length; i++) {
 			table.appendChild(createEntry(ways[i]));
 		};
+		loader.hide();
 	});//JSON.parse(localStorage.getItem("ways")) || [];
 
 function createEntry(way){
@@ -85,6 +92,7 @@ function createEntry(way){
 	delete_link.addEventListener('click', function(el){
 		var result = confirm("¿Seguro que desea eliminar el itinerario?");
 		if(result){
+			loader.show();
 			DB.removeWay(id).then(function(){
 				location.reload();
 			});			
