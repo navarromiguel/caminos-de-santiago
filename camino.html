@@ -1,15 +1,23 @@
 <!DOCTYPE html>
 <html>
 <head>
+	<title>Itinerario</title>
 	<style type="text/css">
       html, body { height: 100%; margin: 1em; padding: 0; }
+      .hide {
+      	display: none;
+      }
       #nombre_camino {
       	margin-bottom: 1em;
+      	margin-right: 1em;
       	height: 32px;
       	width: 20em;
       	font-size: 15px;
         font-weight: 300;
         text-overflow: ellipsis;
+      }
+      #save_way {
+      //	margin: 0,5em;
       }
       #map_container { height: 70%; 
       					width: 80%;}
@@ -50,7 +58,7 @@
       }
 
     </style>
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
@@ -62,15 +70,19 @@
     </script>
 </head>
 <body>
-	<a href="index.html">Menu</a><br>
-	<input type="text" id="nombre_camino" class="form-control-plaintext" placeholder="Nombre del camino">
+	<a href="index.html" onclick="goToMenu()">Menu</a><br>
+	Nombre: <input type="text" id="nombre_camino" class="form-control-plaintext" placeholder="Nombre del camino"><button type="button" id="save_way" class="btn btn-info">Guardar</button>
 	<input type="text" id="search" class="form-control-plaintext controls" placeholder="Lugar a buscar...">
 	<div id="map_container"></div>
 	<p><b>Listado de Puntos de Inter&eacute;s</b></p>
 	<ol id="markers_container">
 		<li id="marker" class="marker"><button type="button" class="btn btn-danger"><i class="glyphicon glyphicon-trash">Eliminar</i></button></li>
 	</ol>
-	<button type="button" id="save" class="btn btn-info">Guardar</button>
 
+	<script type="text/javascript">
+		function goToMenu(){
+			localStorage.setItem("to_edit", false);
+		}
+	</script>
 </body>
 </html>

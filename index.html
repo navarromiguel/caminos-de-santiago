@@ -1,10 +1,93 @@
 <!DOCTYPE html>
-<html>
+<html lan="es">
 <head>
-
+<title>Inicio</title>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<style type="text/css">
+html, body { height: 100%; margin: 1em; padding: 0; }
+table {
+	margin-bottom: 1em;
+}
+table td {
+	padding-right: 1em;
+}
+</style>
 </head>
 <body>
 	<h1>WELCOME!</h1>
-	<a href="camino.html">Camino</a>
+	<table>
+		<thead><th>Nombre</th><th></th><th></th></thead>
+		<tbody id="ways_list"></tbody>
+	</table>
+	<button id="new_way" class="btn btn-info"><a href="camino.html">Añadir itinerario</a></button>
+
+
+<script type="text/javascript">
+document.getElementById("new_way").addEventListener('click', function(el){
+	localStorage.setItem("way", false);
+	localStorage.setItem("edit_mode", true);
+});
+var table = document.getElementById('ways_list');
+var ways = JSON.parse(localStorage.getItem("ways")) || [];
+if(ways){
+	for (var i = 0; i < ways.length; i++) {
+		table.appendChild(createEntry(ways[i]));
+	};
+}
+
+function createEntry(way){
+	var tr = document.createElement('tr');
+	var td_name = document.createElement('td');
+	var td_edit = document.createElement('td');
+	var edit_link = document.createElement('a');
+	edit_link.innerHTML = "Editar";
+	edit_link.id = "edit";
+	edit_link.href = "camino.html";
+	td_edit.appendChild(edit_link);
+	var td_delete = document.createElement('td');
+	var delete_link = document.createElement('a');
+	delete_link.innerHTML = "<span class='glyphicon glyphicon-trash'></span>";
+	delete_link.id = "delete";
+	delete_link.href = "#";
+	td_delete.appendChild(delete_link);
+	var link = document.createElement('a');
+	var txt = document.createTextNode(way.name);
+	link.href = 'camino.html';
+	link.appendChild(txt);
+	link.id = way.id;
+	let id = way.id;
+	link.addEventListener('click', function(el){
+		localStorage.setItem("way", id);
+		localStorage.setItem("edit_mode", false);
+	});
+	edit_link.addEventListener('click', function(el){
+		localStorage.setItem("way", id);
+		localStorage.setItem("edit_mode", true);
+	});
+	delete_link.addEventListener('click', function(el){
+		var result = confirm("¿Seguro que desea eliminar el itinerario?");
+		if(result){
+			var index = -1;
+			var ways = JSON.parse(localStorage.getItem("ways"));
+			for (var i = 0; i < ways.length; i++) {
+				if(ways[i].id == id){
+					index = i;
+					i = ways.length;
+				}
+			};
+			ways.splice(index, 1);
+			localStorage.setItem("ways", JSON.stringify(ways));
+			location.reload();
+		}
+	});
+	td_name.appendChild(link);
+	tr.appendChild(td_name);
+	tr.appendChild(td_edit);
+	tr.appendChild(td_delete);
+	return tr;
+}
+</script>
 </body>
 </html>
