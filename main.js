@@ -320,4 +320,6 @@ function resetRoute(){
 	displayRoute();
 }
 
+console.log("db", db);
+
 

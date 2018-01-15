@@ -14,6 +14,22 @@ table td {
 	padding-right: 1em;
 }
 </style>
+<script src="https://www.gstatic.com/firebasejs/4.6.0/firebase.js"></script>
+<script src="https://www.gstatic.com/firebasejs/4.6.0/firebase-firestore.js"></script>
+<script>
+  // Initialize Firebase
+  // TODO: Replace with your project's customized code snippet
+  var config = {
+    apiKey: "AIzaSyCLiEfmOPl_p63FMHYEnw05Uiugz-ZSU3o",
+    authDomain: "miw-mapas.firebaseapp.com",
+    databaseURL: "https://miw-mapas.firebaseio.com",
+    projectId: "miw-mapas",
+    storageBucket: "",
+    messagingSenderId: "297473832710"
+  };
+  firebase.initializeApp(config);
+  var db = firebase.firestore();
+</script>
 </head>
 <body>
 	<h1>WELCOME!</h1>
