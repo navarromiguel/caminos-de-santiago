@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
 <head>
 	<title>Itinerario</title>
 	<link rel="stylesheet" type="text/css" href="loader.css">
@@ -62,7 +62,11 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="http://www.google.com/jsapi"></script> 
+	<script type="text/javascript">
+	  google.load("visualization", "1", {packages:["columnchart"]});
 
+	</script>
     <script async defer
       src="https://maps.googleapis.com/maps/api/js?libraries=places&callback=initMap&key=AIzaSyDG-k3rmpOA0mk1v_n8ODEURCs_aIONtlI">
     </script>
@@ -100,6 +104,7 @@
 	<ol class="content" id="markers_container">
 		<li id="marker" class="marker"><button type="button" class="btn btn-danger"><i class="glyphicon glyphicon-trash">Eliminar</i></button></li>
 	</ol>
+	<div id="elevation_chart" style="width:640px; height:200px; "></div>
 
 	<script type="text/javascript">
 		function goToMenu(){
