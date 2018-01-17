@@ -100,12 +100,22 @@
 	<a class="content" href="index.html" onclick="goToMenu()">Menu</a><br>
 	<span class="content">Nombre: </span><input type="text" id="nombre_camino" class="form-control-plaintext content" placeholder="Nombre del camino"><button type="button" id="save_way" class="content btn btn-info">Guardar</button>
 
-	<span class="content">Buscar restaurantes: </span><input type="checkbox" id="show_restaurants" class="content">
+	<br>
+	<b class="content">Buscar lugares:</b><br>
+	<span class="content">Restaurantes: </span><input type="checkbox" id="show_restaurants" class="content">
 	<span class="content">Bares: </span><input type="checkbox" id="show_bars" class="content">
 	<span class="content">Cafeter&iacute;as: </span><input type="checkbox" id="show_cafes" class="content">
 	<span class="content">Iglesias: </span><input type="checkbox" id="show_churches" class="content">
 
 	<span class="content"> &nbsp;&nbsp;&nbsp; <b>Mostrar lugares:</b> </span><input type="checkbox" id="show_places" class="content" checked>
+	
+	<br>
+	<b class="content">Capas:</b><br>
+	<!--
+	<span class="content">Lugares protegidos: </span><input type="checkbox" id="show_caminos" class="content">
+-->
+	<span class="content">Ciudades: </span><input type="checkbox" id="show_ciudades" class="content">
+	<br><br>
 
 	<input type="text" id="search" class="form-control-plaintext controls content" placeholder="Lugar a buscar...">
 	<div class="content" id="map_container"></div>
@@ -145,6 +155,14 @@
 		});
 		document.getElementById("show_churches").addEventListener('click', function(el){
 			show_churches = !show_churches;
+		});
+/*
+		document.getElementById("show_caminos").addEventListener('click', function(el){
+			fadeLayer(CAPA_CAMINOS);
+		});
+*/
+		document.getElementById("show_ciudades").addEventListener('click', function(el){
+			fadeLayer(CAPA_CIUDADES);
 		});
 	</script>
 </body>

@@ -11,6 +11,9 @@ var directionsService;;
 var map;
 var miLatlng;
 
+var WMS_ADMIN, CAPA_MADRID, CAPA_CIUDADES, CAPA_CAMINOS;
+
+
 function getPlace(service, type, color){
 	service.nearbySearch({
         location : miLatlng,
@@ -43,6 +46,13 @@ function fadePlaces(){
 	for (var i = 0; i < places.length; i++) {
 		places[i].setVisible(!places[i].getVisible());
 	};
+}
+
+function fadeLayer(layer){
+	if(map.overlayMapTypes.indexOf(layer) != -1)
+		map.overlayMapTypes.removeAt(map.overlayMapTypes.getArray().indexOf(layer));
+	else
+		map.overlayMapTypes.push(layer);
 }
 
 function createMarker(place, color) {
@@ -159,14 +169,14 @@ function initMap() {
   	});   
 
   	// Crea y añade capaa WMS
-  	var WMS_ADMIN = createLayer("http://www.ign.es/wms-inspire/camino-santiago", "AU.AdministrativeUnit");
- 	var CAPA_MADRID = createLayer("http://www.madrid.org/geoserver/mam/SIGI_MA_CAMINO_SANTIAGO/wms", "SIGI_MA_CAMINO_SANTIAGO");
-	var CAPA_CIUDADES = createLayer("http://www.ign.es/wms-inspire/camino-santiago", "GN.GeographicalNames");
-	var CAPA_CAMINOS = createLayer("http://www.ign.es/wms-inspire/camino-santiago", "PS.ProtectedSite");
- 	map.overlayMapTypes.push(CAPA_MADRID); 
- 	map.overlayMapTypes.push(WMS_ADMIN); 
- 	//map.overlayMapTypes.push(CAPA_CIUDADES); 
- 	//map.overlayMapTypes.push(CAPA_CAMINOS); 
+  	WMS_ADMIN = createLayer("http://www.ign.es/wms-inspire/camino-santiago", "AU.AdministrativeUnit");
+ //	DRID = createLayer("http://www.madrid.org/geoserver/mam/SIGI_MA_CAMINO_SANTIAGO/wms", "SIGI_MA_CAMINO_SANTIAGO");
+	CAPA_CIUDADES = createLayer("http://www.ign.es/wms-inspire/camino-santiago", "GN.GeographicalNames");
+//	CAPA_CAMINOS = createLayer("http://www.ign.es/wms-inspire/camino-santiago", "PS.ProtectedSite");
+ //	map.overlayMapTypes.push(CAPA_MADRID); 
+ //	map.overlayMapTypes.push(WMS_ADMIN); 
+ //	map.overlayMapTypes.push(CAPA_CIUDADES); 
+ //	map.overlayMapTypes.push(CAPA_CAMINOS); 
 
  	if(localStorage.getItem("way"))
  		initialize(map);
