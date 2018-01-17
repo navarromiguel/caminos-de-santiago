@@ -63,9 +63,7 @@
 	  google.load("visualization", "1", {packages:["columnchart"]});
 
 	</script>
-    <script async defer
-      src="https://maps.googleapis.com/maps/api/js?libraries=places,geometry&callback=initMap&key=AIzaSyDG-k3rmpOA0mk1v_n8ODEURCs_aIONtlI">
-    </script>
+    
     <script src="https://www.gstatic.com/firebasejs/4.6.0/firebase.js"></script>
 	<script src="https://www.gstatic.com/firebasejs/4.6.0/firebase-firestore.js"></script>
 	<script>
@@ -107,9 +105,6 @@
 	
 	<br>
 	<b class="content">Capas:</b><br>
-	<!--
-	<span class="content">Lugares protegidos: </span><input type="checkbox" id="show_caminos" class="content">
--->
 	<span class="content">Ciudades: </span><input type="checkbox" id="show_ciudades" class="content">
 	<br><br>
 
@@ -121,6 +116,9 @@
 	</ol>
 	<div id="elevation_chart" style="width:640px; height:200px; "></div>
 
+	<script async defer
+      src="https://maps.googleapis.com/maps/api/js?libraries=places,geometry&callback=initMap&key=AIzaSyDG-k3rmpOA0mk1v_n8ODEURCs_aIONtlI">
+    </script>
 	<script type="text/javascript">
 		// Control de algunos eventos sobre el DOM y creación de algunas variables
 		var show_places = true;
