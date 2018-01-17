@@ -184,28 +184,30 @@ function initMap() {
   	});
 
   	// Autocompletado
-  	var input = (document.getElementById('search'));
-	map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
-	var autocomplete = new google.maps.places.Autocomplete(input);
-	autocomplete.bindTo('bounds', map);
-    autocomplete.addListener('place_changed', function() {
-		var place = autocomplete.getPlace();
-	    if (!place.geometry) {
-	        // User entered the name of a Place that was not suggested and
-	        // pressed the Enter key, or the Place Details request failed.
-	        window.alert("No existe la ubicación: '" + place.name + "'");
-	    	return;
-	    }
+  	if(localStorage.getItem("edit_mode") == "true"){
+	  	var input = (document.getElementById('search'));
+		map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
+		var autocomplete = new google.maps.places.Autocomplete(input);
+		autocomplete.bindTo('bounds', map);
+	    autocomplete.addListener('place_changed', function() {
+			var place = autocomplete.getPlace();
+		    if (!place.geometry) {
+		        // User entered the name of a Place that was not suggested and
+		        // pressed the Enter key, or the Place Details request failed.
+		        window.alert("No existe la ubicación: '" + place.name + "'");
+		    	return;
+		    }
 
-	    // If the place has a geometry, then present it on a map.
-	    if (place.geometry.viewport) {
-	    	map.fitBounds(place.geometry.viewport);
-	    } else {
-	        map.setCenter(place.geometry.location);
-	        map.setZoom(17); // Why 17? Because it looks good.
-	    }
-	    addMarker(place.geometry.location, false, localStorage.getItem("edit_mode") == "true");
-    });
+		    // If the place has a geometry, then present it on a map.
+		    if (place.geometry.viewport) {
+		    	map.fitBounds(place.geometry.viewport);
+		    } else {
+		        map.setCenter(place.geometry.location);
+		        map.setZoom(17); // Why 17? Because it looks good.
+		    }
+		    addMarker(place.geometry.location, false, localStorage.getItem("edit_mode") == "true");
+	    });
+	}
 
 	// Evento encargado de crear o actualizar el itinerario
 	document.getElementById('save_way').addEventListener('click', function(){
