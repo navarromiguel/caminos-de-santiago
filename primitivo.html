@@ -57,7 +57,6 @@
       #search:focus {
         border-color: #4d90fe;
       }
-
     </style>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
@@ -93,25 +92,45 @@
 </head>
 <body>
 	<div class="preload">
+    <h1>Cargando...</h1>
 		<img src="http://i.imgur.com/KUJoe.gif">
 	</div>
 
 	<a class="content" href="index.html" onclick="goToMenu()">Menu</a><br>
-	<h1>Camino primitivo</h1><span class="content">Mostrar sitios de inter&eacute;s: </span><input type="checkbox" id="show_places" class="content">
+	<h1 class="content">Camino primitivo</h1>
+
+  <span class="content">Buscar restaurantes: </span><input type="checkbox" id="show_restaurants" class="content">
+  <span class="content">Bares: </span><input type="checkbox" id="show_bars" class="content">
+  <span class="content">Cafeter&iacute;as: </span><input type="checkbox" id="show_cafes" class="content">
+  <span class="content">Iglesias: </span><input type="checkbox" id="show_churches" class="content">
+
+  <span class="content"> &nbsp;&nbsp;&nbsp; <b>Mostrar lugares:</b> </span><input type="checkbox" id="show_places" class="content" checked>
+
 	<div class="content" id="map_container"></div>
-	<p class="content"><b>Listado de Puntos de Inter&eacute;s</b></p>
-	<ol class="content" id="markers_container">
-		<li id="marker" class="marker"><button type="button" class="btn btn-danger"><i class="glyphicon glyphicon-trash">Eliminar</i></button></li>
-	</ol>
+	<p class="content">
 	<div id="elevation_chart" style="width:640px; height:200px; "></div>
 
 	<script type="text/javascript">
-    var show_places = false;
+    var show_places = true;
+    var show_restaurants, show_bars, show_cafes, show_churches = false;
     function goToMenu(){
       localStorage.setItem("to_edit", false);
     }
     document.getElementById("show_places").addEventListener('click', function(el){
+      fadePlaces();
       show_places = !show_places;
+    });
+    document.getElementById("show_restaurants").addEventListener('click', function(el){
+      show_restaurants = !show_restaurants;
+    });
+    document.getElementById("show_bars").addEventListener('click', function(el){
+      show_bars = !show_bars;
+    });
+    document.getElementById("show_cafes").addEventListener('click', function(el){
+      show_cafes = !show_cafes;
+    });
+    document.getElementById("show_churches").addEventListener('click', function(el){
+      show_churches = !show_churches;
     });
   </script>
 </body>

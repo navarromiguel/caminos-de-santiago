@@ -5,6 +5,11 @@ button .content {display:none;}
     width:100px;
     height: 100px;
     position: fixed;
-    top: 50%;
+    top: 30%;
     left: 50%;
+}
+
+.preload h1{
+	margin-left: -0.7em;
+	margin-bottom: 1em;
 }

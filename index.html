@@ -36,10 +36,11 @@ table td {
 </head>
 <body>
 	<div class="preload">
+    <h1>Cargando...</h1>
 		<img src="http://i.imgur.com/KUJoe.gif">
 	</div>
 
-	<h1 class="content">WELCOME!</h1>
+	<h1 class="content">ITINERATOR - Caminos de Santiago!</h1>
 	<table class="content">
 		<thead><th>Nombre</th><th></th><th></th></thead>
 		<tbody id="ways_list">
@@ -50,6 +51,7 @@ table td {
 
 
 <script type="text/javascript">
+localStorage.setItem("way_name", "");
 document.getElementById("new_way").addEventListener('click', function(el){
 	localStorage.setItem("way", false);
 	localStorage.setItem("edit_mode", true);
@@ -85,10 +87,12 @@ function createEntry(way){
 	let id = way.id;
 	link.addEventListener('click', function(el){
 		localStorage.setItem("way", id);
+		localStorage.setItem("way_name", way.name);
 		localStorage.setItem("edit_mode", false);
 	});
 	edit_link.addEventListener('click', function(el){
 		localStorage.setItem("way", id);
+		localStorage.setItem("way_name", way.name);
 		localStorage.setItem("edit_mode", true);
 	});
 	delete_link.addEventListener('click', function(el){

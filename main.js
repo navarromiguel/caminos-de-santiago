@@ -1,5 +1,6 @@
 
 var markers = [];
+var places = [];
 var geocoder;
 var directionsDisplay;
 var infowindow;
@@ -10,68 +11,38 @@ var directionsService;;
 var map;
 var miLatlng;
 
+function getPlace(service, type, color){
+	service.nearbySearch({
+        location : miLatlng,
+        radius : 5500,
+        type : [ type ]
+    }, function callback(results, status) {
+	  if (status == google.maps.places.PlacesServiceStatus.OK) {
+	    for (var i = 0; i < results.length; i++) {
+	      var place = results[i];
+	      createMarker(results[i], color);
+	    }
+	  }
+	});
+}
+
 function getPlaces(service){
 	if(!show_places) return;
-	service.nearbySearch({
-        location : miLatlng,
-        radius : 5500,
-        type : [ 'restaurant' ]
-    }, function callback(results, status) {
-	  if (status == google.maps.places.PlacesServiceStatus.OK) {
-	    for (var i = 0; i < results.length; i++) {
-	      var place = results[i];
-	      createMarker(results[i], '0000ff');
-	    }
-	  }
-	});
-	service.nearbySearch({
-        location : miLatlng,
-        radius : 5500,
-        type : [ 'bar' ]
-    }, function callback(results, status) {
-	  if (status == google.maps.places.PlacesServiceStatus.OK) {
-	    for (var i = 0; i < results.length; i++) {
-	      var place = results[i];
-	      createMarker(results[i], 'ff0000');
-	    }
-	  }
-	});
-	service.nearbySearch({
-        location : miLatlng,
-        radius : 5500,
-        type : [ 'cafe' ]
-    }, function callback(results, status) {
-	  if (status == google.maps.places.PlacesServiceStatus.OK) {
-	    for (var i = 0; i < results.length; i++) {
-	      var place = results[i];
-	      createMarker(results[i], 'ff00ff');
-	    }
-	  }
-	});
-	service.nearbySearch({
-        location : miLatlng,
-        radius : 5500,
-        type : [ 'church' ]
-    }, function callback(results, status) {
-	  if (status == google.maps.places.PlacesServiceStatus.OK) {
-	    for (var i = 0; i < results.length; i++) {
-	      var place = results[i];
-	      createMarker(results[i], 'ffff00');
-	    }
-	  }
-	});
-	service.nearbySearch({
-        location : miLatlng,
-        radius : 5500,
-        type : [ 'restaurant', 'bar', 'cafe', 'church' ]
-    }, function callback(results, status) {
-	  if (status == google.maps.places.PlacesServiceStatus.OK) {
-	    for (var i = 0; i < results.length; i++) {
-	      var place = results[i];
-	      createMarker(results[i], '000000');
-	    }
-	  }
-	});
+	if (show_restaurants)
+		getPlace(service, 'restaurant', '0000ff');
+	if (show_bars)
+		getPlace(service, 'bar', 'ff0000');
+	if (show_cafes)
+		getPlace(service, 'cafe', 'ff00ff');
+	if (show_churches)
+		getPlace(service, 'church', 'ffff00');
+}
+
+// Oculta o muestra los lugares creados
+function fadePlaces(){
+	for (var i = 0; i < places.length; i++) {
+		places[i].setVisible(!places[i].getVisible());
+	};
 }
 
 function createMarker(place, color) {
@@ -87,6 +58,8 @@ function createMarker(place, color) {
         icon: pinImage,
         position : place.geometry.location
     });
+
+    places.push(marker);
 
     google.maps.event.addListener(marker, 'click', function() {
         infowindow.setContent(place.name);
