@@ -11,6 +11,7 @@ var map;
 var miLatlng;
 
 function getPlaces(service){
+	if(!show_places) return;
 	service.nearbySearch({
         location : miLatlng,
         radius : 5500,
@@ -94,7 +95,6 @@ function createMarker(place, color) {
 }
 
 function initPrimitivo(){
-	var service = new google.maps.places.PlacesService(map);
 	miLatlng = new google.maps.LatLng(39.5, -3);
 	var misOpciones = {
 		center: miLatlng,
@@ -103,7 +103,7 @@ function initPrimitivo(){
 	};
 
 	map = new google.maps.Map(document.getElementById("map_container"), misOpciones);
-  	
+	var service = new google.maps.places.PlacesService(map);
   	google.maps.event.addListener(map, 'mousedown', function(event){
   		console.log(event);
   		miLatlng = event.latLng;

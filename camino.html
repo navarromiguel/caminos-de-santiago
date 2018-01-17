@@ -97,7 +97,7 @@
 	</div>
 
 	<a class="content" href="index.html" onclick="goToMenu()">Menu</a><br>
-	<span class="content">Nombre: </span><input type="text" id="nombre_camino" class="form-control-plaintext content" placeholder="Nombre del camino"><button type="button" id="save_way" class="content btn btn-info">Guardar</button>
+	<span class="content">Nombre: </span><input type="text" id="nombre_camino" class="form-control-plaintext content" placeholder="Nombre del camino"><button type="button" id="save_way" class="content btn btn-info">Guardar</button><span class="content">Mostrar sitios de inter&eacute;s: </span><input type="checkbox" id="show_places" class="content">
 	<input type="text" id="search" class="form-control-plaintext controls content" placeholder="Lugar a buscar...">
 	<div class="content" id="map_container"></div>
 	<p class="content"><b>Listado de Puntos de Inter&eacute;s</b></p>
@@ -107,9 +107,13 @@
 	<div id="elevation_chart" style="width:640px; height:200px; "></div>
 
 	<script type="text/javascript">
+		var show_places = false;
 		function goToMenu(){
 			localStorage.setItem("to_edit", false);
 		}
+		document.getElementById("show_places").addEventListener('click', function(el){
+			show_places = !show_places;
+		});
 	</script>
 </body>
 </html>
