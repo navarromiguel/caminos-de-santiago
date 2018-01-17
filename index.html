@@ -19,7 +19,6 @@ table td {
 <script src="https://www.gstatic.com/firebasejs/4.6.0/firebase-firestore.js"></script>
 <script>
   // Initialize Firebase
-  // TODO: Replace with your project's customized code snippet
   var config = {
     apiKey: "AIzaSyCLiEfmOPl_p63FMHYEnw05Uiugz-ZSU3o",
     authDomain: "miw-mapas.firebaseapp.com",
@@ -51,6 +50,7 @@ table td {
 
 
 <script type="text/javascript">
+// Crea y rellena la tabla con los itinerarios creados
 localStorage.setItem("way_name", "");
 document.getElementById("new_way").addEventListener('click', function(el){
 	localStorage.setItem("way", false);
@@ -58,11 +58,11 @@ document.getElementById("new_way").addEventListener('click', function(el){
 });
 var table = document.getElementById('ways_list');
 var ways = DB.getAllWays().then(function(ways){
-		for (var i = 0; i < ways.length; i++) {
-			table.appendChild(createEntry(ways[i]));
-		};
-		loader.hide();
-	});//JSON.parse(localStorage.getItem("ways")) || [];
+	for (var i = 0; i < ways.length; i++) {
+		table.appendChild(createEntry(ways[i]));
+	};
+	loader.hide();
+});
 
 function createEntry(way){
 	var tr = document.createElement('tr');

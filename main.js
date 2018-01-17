@@ -1,18 +1,13 @@
-
+// Declaración de variables globales
 var markers = [];
 var places = [];
 var geocoder;
 var directionsDisplay;
 var infowindow;
 var directionsService;;
-// Load the Visualization API and the columnchart package.
-// google.load("visualization", "1", {packages: ["columnchart"]});
-
 var map;
 var miLatlng;
-
 var WMS_ADMIN, CAPA_MADRID, CAPA_CIUDADES, CAPA_CAMINOS;
-
 
 function getPlace(service, type, color){
 	service.nearbySearch({
@@ -29,6 +24,7 @@ function getPlace(service, type, color){
 	});
 }
 
+// Busca los lugares para cada tipo solicitado
 function getPlaces(service){
 	if(!show_places) return;
 	if (show_restaurants)
@@ -48,6 +44,7 @@ function fadePlaces(){
 	};
 }
 
+// Oculta o muestra una capa
 function fadeLayer(layer){
 	if(map.overlayMapTypes.indexOf(layer) != -1)
 		map.overlayMapTypes.removeAt(map.overlayMapTypes.getArray().indexOf(layer));
@@ -55,6 +52,7 @@ function fadeLayer(layer){
 		map.overlayMapTypes.push(layer);
 }
 
+// Crea un marcador para un lugar y le asigna un color
 function createMarker(place, color) {
 	var pinImage = new google.maps.MarkerImage("http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|" + color,
         new google.maps.Size(21, 34),
@@ -70,13 +68,13 @@ function createMarker(place, color) {
     });
 
     places.push(marker);
-
     google.maps.event.addListener(marker, 'click', function() {
         infowindow.setContent(place.name);
         infowindow.open(map, this);
     });
 }
 
+// Crea el camino Primitivo a partir de datos KML
 function initPrimitivo(){
 	miLatlng = new google.maps.LatLng(39.5, -3);
 	var misOpciones = {
@@ -144,9 +142,10 @@ function initPrimitivo(){
   		url: 'https://www.dropbox.com/s/g662l1red9oq6a9/11b-variante-Ferreira-de-Negral.kml?dl=1', 
   		preserveViewport: true});
   	primiLayer13.setMap(map);
-  	loader.hide();
+  	loader.hide(); // Oculta el preloader y muestra el mapa
 }
 
+// Creación e inicialización del mapa
 function initMap() {
 	infowindow = new google.maps.InfoWindow();
 	directionsService = new google.maps.DirectionsService();
@@ -168,18 +167,15 @@ function initMap() {
   		getPlaces(service);
   	});   
 
-  	// Crea y añade capaa WMS
-  	WMS_ADMIN = createLayer("http://www.ign.es/wms-inspire/camino-santiago", "AU.AdministrativeUnit");
- //	DRID = createLayer("http://www.madrid.org/geoserver/mam/SIGI_MA_CAMINO_SANTIAGO/wms", "SIGI_MA_CAMINO_SANTIAGO");
+  	// Crea y añade capa WMS
+  	//  WMS_ADMIN = createLayer("http://www.ign.es/wms-inspire/camino-santiago", "AU.AdministrativeUnit");
+ 	//	CAPA_MADRID = createLayer("http://www.madrid.org/geoserver/mam/SIGI_MA_CAMINO_SANTIAGO/wms", "SIGI_MA_CAMINO_SANTIAGO");
 	CAPA_CIUDADES = createLayer("http://www.ign.es/wms-inspire/camino-santiago", "GN.GeographicalNames");
-//	CAPA_CAMINOS = createLayer("http://www.ign.es/wms-inspire/camino-santiago", "PS.ProtectedSite");
- //	map.overlayMapTypes.push(CAPA_MADRID); 
- //	map.overlayMapTypes.push(WMS_ADMIN); 
- //	map.overlayMapTypes.push(CAPA_CIUDADES); 
- //	map.overlayMapTypes.push(CAPA_CAMINOS); 
+	//	CAPA_CAMINOS = createLayer("http://www.ign.es/wms-inspire/camino-santiago", "PS.ProtectedSite");
 
+	// Si estamos cargando el mapa de un itinerario ya creado...
  	if(localStorage.getItem("way"))
- 		initialize(map);
+ 		initialize(map); // lo inicializamos y cargamos sus datos y componentes
   	google.maps.event.addListener(map, 'click', function(event){
   		if(localStorage.getItem("edit_mode") == "true"){
   			addMarker(new google.maps.LatLng(event.latLng.lat(), event.latLng.lng()), event, true);
@@ -190,7 +186,6 @@ function initMap() {
   	// Autocompletado
   	var input = (document.getElementById('search'));
 	map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
-
 	var autocomplete = new google.maps.places.Autocomplete(input);
 	autocomplete.bindTo('bounds', map);
     autocomplete.addListener('place_changed', function() {
@@ -209,27 +204,16 @@ function initMap() {
 	        map.setCenter(place.geometry.location);
 	        map.setZoom(17); // Why 17? Because it looks good.
 	    }
-
-	    addMarker(place.geometry.location);
-	    /*
-	    var address = '';
-	    if (place.address_components) {
-	        address = [
-	        	(place.address_components[0] && place.address_components[0].short_name || ''),
-	          	(place.address_components[1] && place.address_components[1].short_name || ''),
-	          	(place.address_components[2] && place.address_components[2].short_name || '')
-	        ].join(' ');
-	   	}
-	   	*/
+	    addMarker(place.geometry.location, false, localStorage.getItem("edit_mode") == "true");
     });
 
-	// Evento encargado de añadir un camino nuevo
+	// Evento encargado de crear o actualizar el itinerario
 	document.getElementById('save_way').addEventListener('click', function(){
 		if(!document.getElementById('nombre_camino').value){
 			alert("Tiene que elegir un nombre.");
 			return;
 		}
-		loader.show();
+		loader.show(); // Mostramos preloader mientras se procesa la transacción
 		var ways = DB.getAllWays().then(function(ways){
 			console.log("ways", ways);
 			var edit_mode = localStorage.getItem("edit_mode") == "true";
@@ -258,6 +242,7 @@ function initMap() {
 	});
 }
 
+// Crea una capa a partir de un servicio WMS
 function createLayer(_url, layer_name){
 	return new google.maps.ImageMapType({
 		getTileUrl: function(coord, zoom) {
@@ -268,7 +253,7 @@ function createLayer(_url, layer_name){
 		 	var bot = proj.fromPointToLatLng(new google.maps.Point((coord.x + 1) * 256 / zfactor, (coord.y + 1) * 256 / zfactor));
 
 		 	var bbox = (top.lng()) + "," + (bot.lat()) + "," + (bot.lng()) + "," + (top.lat());
-		 	//crea la cadena del Bounding box
+		 	// Crea la cadena del Bounding box
 		 	var url = _url;
 		 	//URL del WMS
 		 	url += "?REQUEST=GetMap"; //Operación WMS
@@ -327,8 +312,6 @@ function plotElevation(results, status) {
         	opacity: 0.4,
         	map: map
       	}
-     	// polyline = new google.maps.Polyline(pathOptions);
-
       	// Extract the data from which to populate the chart.
       	// Because the samples are equidistant, the 'Sample'
       	// column here does double duty as distance along the
@@ -351,6 +334,8 @@ function plotElevation(results, status) {
     }
 } 
 
+// Calcula la elevación y la distancia de un marcador y modifica el DOM 
+// con el valor devuelto
 function getElevation(event, content, marker, txt) {
     var locations = [];
     // Retrieve the clicked location and push it on the array
@@ -367,12 +352,17 @@ function getElevation(event, content, marker, txt) {
       	if (status == google.maps.ElevationStatus.OK) {
 			// Retrieve the first result
         	if (results[0]) {
+        		var dist;
         		var res = Math.round(results[0].elevation * 100) / 100
+        		if(markers.indexOf(marker) > 0)
+        			dist = Math.round(google.maps.geometry.spherical.computeDistanceBetween (markers[markers.indexOf(marker) - 1].position, marker.position) * 100) / 100;
         		marker.content = content + "La elevaci&oacute;n en este punto es de " + res + " metros."
-          		txt.data += ".  Altura: " + res + " metros."
+          		if(markers.indexOf(marker) > 0)
+          			txt.data += ".  Altura: " + res + " metros. Distancia: " + dist + " metros.";
+          		else
+          			txt.data += ".  Altura: " + res + " metros.";
           		// Open an info window indicating the elevation at the clicked position
           		infowindow.setContent('<div><strong>' + marker.content + '</strong></div>');
-        		//  infowindow.setPosition(clickedLocation);
           		infowindow.open(map, marker);
           		return results[0].elevation;
         	} else {
@@ -384,6 +374,7 @@ function getElevation(event, content, marker, txt) {
     });
 }
 
+// Añade un nuevo marcador del itinerario
 function addMarker(location, event, edit_mode){
 	console.log("adding marker...", location);
 	infowindow.close();
@@ -391,9 +382,6 @@ function addMarker(location, event, edit_mode){
 		position: location, 
 		map: map, 
 	});
-	//if(!localStorage.getItem("edit_mode") == "false"){
-	//	getElevation(event, content, marker);
-	//}
 	
 	markers.push(marker);
 	google.maps.event.addListener(marker, 'click', function() {
@@ -430,9 +418,7 @@ function addMarker(location, event, edit_mode){
 			ul.appendChild(li);
 
 			marker.content = results[0]['formatted_address'] + "</br>";
-			//	infowindow.setContent('<div><strong>' + results[0]['formatted_address']+ '</strong>');
-			//	infowindow.open(map, markers[markers.length-1]);
-			if(typeof(event) == "boolean")
+			if(!event || typeof(event) == "boolean")
 				getElevation({latLng: marker.position}, marker.content, marker, txt);
 			else
 				getElevation(event, marker.content, marker, txt);
@@ -465,6 +451,7 @@ function initialize(){
 	});
 }
 
+// Dibuja la ruta del itinerario
 function displayRoute(){
 	if(markers.length <= 1) return;
 	var request = {

@@ -17,9 +17,6 @@
         font-weight: 300;
         text-overflow: ellipsis;
       }
-      #save_way {
-      //	margin: 0,5em;
-      }
       #map_container { height: 70%; 
       					width: 80%;}
       #marker {
@@ -67,13 +64,12 @@
 
 	</script>
     <script async defer
-      src="https://maps.googleapis.com/maps/api/js?libraries=places&callback=initMap&key=AIzaSyDG-k3rmpOA0mk1v_n8ODEURCs_aIONtlI">
+      src="https://maps.googleapis.com/maps/api/js?libraries=places,geometry&callback=initMap&key=AIzaSyDG-k3rmpOA0mk1v_n8ODEURCs_aIONtlI">
     </script>
     <script src="https://www.gstatic.com/firebasejs/4.6.0/firebase.js"></script>
 	<script src="https://www.gstatic.com/firebasejs/4.6.0/firebase-firestore.js"></script>
 	<script>
 	  // Initialize Firebase
-	  // TODO: Replace with your project's customized code snippet
 	  var config = {
 	    apiKey: "AIzaSyCLiEfmOPl_p63FMHYEnw05Uiugz-ZSU3o",
 	    authDomain: "miw-mapas.firebaseapp.com",
@@ -126,6 +122,7 @@
 	<div id="elevation_chart" style="width:640px; height:200px; "></div>
 
 	<script type="text/javascript">
+		// Control de algunos eventos sobre el DOM y creación de algunas variables
 		var show_places = true;
 		var show_restaurants, show_bars, show_cafes, show_churches = false;
 		if(localStorage.getItem("edit_mode") == "true"){
@@ -156,11 +153,6 @@
 		document.getElementById("show_churches").addEventListener('click', function(el){
 			show_churches = !show_churches;
 		});
-/*
-		document.getElementById("show_caminos").addEventListener('click', function(el){
-			fadeLayer(CAPA_CAMINOS);
-		});
-*/
 		document.getElementById("show_ciudades").addEventListener('click', function(el){
 			fadeLayer(CAPA_CIUDADES);
 		});

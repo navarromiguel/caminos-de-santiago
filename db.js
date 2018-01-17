@@ -1,3 +1,4 @@
+/* Servicio encargado de la gestión de la Base de datos CLOUD FIRESTORE (FIREBASE) */
 
 const WAYS = "ways";
 

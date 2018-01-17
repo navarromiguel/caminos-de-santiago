@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-	<title>Itinerario</title>
+	<title>Itinerario camino Primitivo</title>
 	<link rel="stylesheet" type="text/css" href="loader.css">
 	<style type="text/css">
       html, body { height: 100%; margin: 1em; padding: 0; }
@@ -73,7 +73,6 @@
 	<script src="https://www.gstatic.com/firebasejs/4.6.0/firebase-firestore.js"></script>
 	<script>
 	  // Initialize Firebase
-	  // TODO: Replace with your project's customized code snippet
 	  var config = {
 	    apiKey: "AIzaSyCLiEfmOPl_p63FMHYEnw05Uiugz-ZSU3o",
 	    authDomain: "miw-mapas.firebaseapp.com",
@@ -111,6 +110,7 @@
 	<div id="elevation_chart" style="width:640px; height:200px; "></div>
 
 	<script type="text/javascript">
+    // Control de algunos eventos sobre el DOM y creación de algunas variables
     var show_places = true;
     var show_restaurants, show_bars, show_cafes, show_churches = false;
     function goToMenu(){
