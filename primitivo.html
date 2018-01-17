@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+	<title>Itinerario</title>
+	<link rel="stylesheet" type="text/css" href="loader.css">
+	<style type="text/css">
+      html, body { height: 100%; margin: 1em; padding: 0; }
+      .hide {
+      	display: none;
+      }
+      #nombre_camino {
+      	margin-bottom: 1em;
+      	margin-right: 1em;
+      	height: 32px;
+      	width: 20em;
+      	font-size: 15px;
+        font-weight: 300;
+        text-overflow: ellipsis;
+      }
+      #save_way {
+      //	margin: 0,5em;
+      }
+      #map_container { height: 70%; 
+      					width: 80%;}
+      #marker {
+      	display: none;
+      }
+
+      .marker {
+      	margin-bottom: 0.2em;
+      }
+
+      .marker > button {
+      	margin-right: 0.5em;
+      }
+
+      .controls {
+        margin-top: 10px;
+        border: 1px solid transparent;
+        border-radius: 2px 0 0 2px;
+        box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        height: 32px;
+        outline: none;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+      }
+
+      #search {
+        font-family: Roboto;
+        font-size: 15px;
+        font-weight: 300;
+        margin-left: 12px;
+        padding: 0 11px 0 13px;
+        text-overflow: ellipsis;
+      }
+
+      #search:focus {
+        border-color: #4d90fe;
+      }
+
+    </style>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="http://www.google.com/jsapi"></script> 
+	<script type="text/javascript">
+	  google.load("visualization", "1", {packages:["columnchart"]});
+
+	</script>
+    <script async defer
+      src="https://maps.googleapis.com/maps/api/js?libraries=places&callback=initPrimitivo&key=AIzaSyDG-k3rmpOA0mk1v_n8ODEURCs_aIONtlI">
+    </script>
+    <script src="https://www.gstatic.com/firebasejs/4.6.0/firebase.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/4.6.0/firebase-firestore.js"></script>
+	<script>
+	  // Initialize Firebase
+	  // TODO: Replace with your project's customized code snippet
+	  var config = {
+	    apiKey: "AIzaSyCLiEfmOPl_p63FMHYEnw05Uiugz-ZSU3o",
+	    authDomain: "miw-mapas.firebaseapp.com",
+	    databaseURL: "https://miw-mapas.firebaseio.com",
+	    projectId: "miw-mapas",
+	    storageBucket: "",
+	    messagingSenderId: "297473832710"
+	  };
+	  firebase.initializeApp(config);
+	  var db = firebase.firestore();
+	</script>
+	<script type="text/javascript" src="db.js"></script>
+    <script type="text/javascript" src="main.js">
+    </script>
+    <script type="text/javascript" src="loader.js"></script>
+</head>
+<body>
+	<div class="preload">
+		<img src="http://i.imgur.com/KUJoe.gif">
+	</div>
+
+	<a class="content" href="index.html" onclick="goToMenu()">Menu</a><br>
+	<span class="content">Nombre: </span><input type="text" id="nombre_camino" class="form-control-plaintext content" placeholder="Nombre del camino"><button type="button" id="save_way" class="content btn btn-info">Guardar</button>
+	<input type="text" id="search" class="form-control-plaintext controls content" placeholder="Lugar a buscar...">
+	<div class="content" id="map_container"></div>
+	<p class="content"><b>Listado de Puntos de Inter&eacute;s</b></p>
+	<ol class="content" id="markers_container">
+		<li id="marker" class="marker"><button type="button" class="btn btn-danger"><i class="glyphicon glyphicon-trash">Eliminar</i></button></li>
+	</ol>
+	<div id="elevation_chart" style="width:640px; height:200px; "></div>
+
+	<script type="text/javascript">
+		function goToMenu(){
+			localStorage.setItem("to_edit", false);
+		}
+	</script>
+</body>
+</html>

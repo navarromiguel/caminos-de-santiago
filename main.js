@@ -8,6 +8,162 @@ var directionsService;;
 // google.load("visualization", "1", {packages: ["columnchart"]});
 
 var map;
+var miLatlng;
+
+function getPlaces(service){
+	service.nearbySearch({
+        location : miLatlng,
+        radius : 5500,
+        type : [ 'restaurant' ]
+    }, function callback(results, status) {
+	  if (status == google.maps.places.PlacesServiceStatus.OK) {
+	    for (var i = 0; i < results.length; i++) {
+	      var place = results[i];
+	      createMarker(results[i], '0000ff');
+	    }
+	  }
+	});
+	service.nearbySearch({
+        location : miLatlng,
+        radius : 5500,
+        type : [ 'bar' ]
+    }, function callback(results, status) {
+	  if (status == google.maps.places.PlacesServiceStatus.OK) {
+	    for (var i = 0; i < results.length; i++) {
+	      var place = results[i];
+	      createMarker(results[i], 'ff0000');
+	    }
+	  }
+	});
+	service.nearbySearch({
+        location : miLatlng,
+        radius : 5500,
+        type : [ 'cafe' ]
+    }, function callback(results, status) {
+	  if (status == google.maps.places.PlacesServiceStatus.OK) {
+	    for (var i = 0; i < results.length; i++) {
+	      var place = results[i];
+	      createMarker(results[i], 'ff00ff');
+	    }
+	  }
+	});
+	service.nearbySearch({
+        location : miLatlng,
+        radius : 5500,
+        type : [ 'church' ]
+    }, function callback(results, status) {
+	  if (status == google.maps.places.PlacesServiceStatus.OK) {
+	    for (var i = 0; i < results.length; i++) {
+	      var place = results[i];
+	      createMarker(results[i], 'ffff00');
+	    }
+	  }
+	});
+	service.nearbySearch({
+        location : miLatlng,
+        radius : 5500,
+        type : [ 'restaurant', 'bar', 'cafe', 'church' ]
+    }, function callback(results, status) {
+	  if (status == google.maps.places.PlacesServiceStatus.OK) {
+	    for (var i = 0; i < results.length; i++) {
+	      var place = results[i];
+	      createMarker(results[i], '000000');
+	    }
+	  }
+	});
+}
+
+function createMarker(place, color) {
+	var pinImage = new google.maps.MarkerImage("http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|" + color,
+        new google.maps.Size(21, 34),
+        new google.maps.Point(0,0),
+        new google.maps.Point(10, 34));
+ 
+	infowindow = new google.maps.InfoWindow();
+    var placeLoc = place.geometry.location;
+    var marker = new google.maps.Marker({
+        map : map,
+        icon: pinImage,
+        position : place.geometry.location
+    });
+
+    google.maps.event.addListener(marker, 'click', function() {
+        infowindow.setContent(place.name);
+        infowindow.open(map, this);
+    });
+}
+
+function initPrimitivo(){
+	var service = new google.maps.places.PlacesService(map);
+	miLatlng = new google.maps.LatLng(39.5, -3);
+	var misOpciones = {
+		center: miLatlng,
+	  	zoom: 6,
+	  	mapTypeId: google.maps.MapTypeId.ROADMAP
+	};
+
+	map = new google.maps.Map(document.getElementById("map_container"), misOpciones);
+  	
+  	google.maps.event.addListener(map, 'mousedown', function(event){
+  		console.log(event);
+  		miLatlng = event.latLng;
+  		getPlaces(service);
+  	});    
+
+  	// Capa primitivo
+  	var primiLayer = new google.maps.KmlLayer({url: 'https://www.dropbox.com/s/ojozlp5sniovtba/01-Oviedo-Grado.kml?dl=1', preserveViewport: true});
+  	primiLayer.setMap(map);
+  	var primiLayer2 = new google.maps.KmlLayer({
+  		url: 'https://www.dropbox.com/s/jodc5ekipsyvwfe/02-Grado-Salas.kml?dl=1', 
+  		preserveViewport: true});
+  	primiLayer2.setMap(map);
+  	var primiLayer3 = new google.maps.KmlLayer({
+  		url: 'https://www.dropbox.com/s/6ogca9gsp8do9ga/03-Salas-Tineo.kml?dl=1', 
+  		preserveViewport: true});
+  	primiLayer3.setMap(map);
+  	var primiLayer4 = new google.maps.KmlLayer({
+  		url: 'https://www.dropbox.com/s/uba6j9526we2cmj/04a-Tineo-Pola-de-Allande.kml?dl=1', 
+  		preserveViewport: true});
+  	primiLayer4.setMap(map);
+  	var primiLayer5 = new google.maps.KmlLayer({
+  		url: 'https://www.dropbox.com/s/zr5357vnyvp5h4e/04b-variante-de-Hospitales.kml?dl=1', 
+  		preserveViewport: true});
+  	primiLayer5.setMap(map);
+  	var primiLayer6 = new google.maps.KmlLayer({
+  		url: 'https://www.dropbox.com/s/0yciom50g7dcnr4/05-Pola-de-Allande-La-Mesa.kml?dl=1', 
+  		preserveViewport: true});
+  	primiLayer6.setMap(map);
+  	var primiLayer7 = new google.maps.KmlLayer({
+  		url: 'https://www.dropbox.com/s/vhh7ovbez8z6her/07-Grandas-de-Salime-A-Fonsagrada.kml?dl=1', 
+  		preserveViewport: true});
+  	primiLayer7.setMap(map);
+  	var primiLayer8 = new google.maps.KmlLayer({
+  		url: 'https://www.dropbox.com/s/nk7uy8xhhhqv35q/08-A-Fonsagrada-Cadavo-Baleira.kml?dl=1', 
+  		preserveViewport: true});
+  	primiLayer8.setMap(map);
+  	var primiLayer9 = new google.maps.KmlLayer({
+  		url: 'https://www.dropbox.com/s/um3rxtm72zdbrzd/08b-variante-Paradanova-Montouto.kml?dl=1', 
+  		preserveViewport: true});
+  	primiLayer9.setMap(map);
+  	var primiLayer10 = new google.maps.KmlLayer({
+  		url: 'https://www.dropbox.com/s/jgsdcbey6gtx33m/09-Cadavo-Baleira-Lugo.kml?dl=1', 
+  		preserveViewport: true});
+  	primiLayer10.setMap(map);
+  	var primiLayer11 = new google.maps.KmlLayer({
+  		url: 'https://www.dropbox.com/s/qjf25x03nh7zqah/10-Lugo-San-Romao-da-Retorta.kml?dl=1', 
+  		preserveViewport: true});
+  	primiLayer11.setMap(map);
+  	var primiLayer12 = new google.maps.KmlLayer({
+  		url: 'https://www.dropbox.com/s/uv5sz253gikedpp/11a-San-Romao-da-Retorta-Melide.kml?dl=1', 
+  		preserveViewport: true});
+  	primiLayer12.setMap(map);
+  	var primiLayer13 = new google.maps.KmlLayer({
+  		url: 'https://www.dropbox.com/s/g662l1red9oq6a9/11b-variante-Ferreira-de-Negral.kml?dl=1', 
+  		preserveViewport: true});
+  	primiLayer13.setMap(map);
+  	loader.hide();
+}
+
 function initMap() {
 	infowindow = new google.maps.InfoWindow();
 	directionsService = new google.maps.DirectionsService();
@@ -15,13 +171,20 @@ function initMap() {
 	geocoder = new google.maps.Geocoder();
 	// Create an ElevationService.
     elevator = new google.maps.ElevationService();
-	var miLatlng = new google.maps.LatLng(39.5, -3);
+	miLatlng = new google.maps.LatLng(39.5, -3);
 	var misOpciones = {
 		center: miLatlng,
 	  	zoom: 6,
 	  	mapTypeId: google.maps.MapTypeId.ROADMAP
 	};
   	map = new google.maps.Map(document.getElementById("map_container"), misOpciones);
+	var service = new google.maps.places.PlacesService(map);
+  	google.maps.event.addListener(map, 'mousedown', function(event){
+  		console.log(event);
+  		miLatlng = event.latLng;
+  		getPlaces(service);
+  	});   
+
   	// Crea y añade capaa WMS
   	var WMS_ADMIN = createLayer("http://www.ign.es/wms-inspire/camino-santiago", "AU.AdministrativeUnit");
  	var CAPA_MADRID = createLayer("http://www.madrid.org/geoserver/mam/SIGI_MA_CAMINO_SANTIAGO/wms", "SIGI_MA_CAMINO_SANTIAGO");
@@ -29,8 +192,8 @@ function initMap() {
 	var CAPA_CAMINOS = createLayer("http://www.ign.es/wms-inspire/camino-santiago", "PS.ProtectedSite");
  	map.overlayMapTypes.push(CAPA_MADRID); 
  	map.overlayMapTypes.push(WMS_ADMIN); 
- 	map.overlayMapTypes.push(CAPA_CIUDADES); 
- 	map.overlayMapTypes.push(CAPA_CAMINOS); 
+ 	//map.overlayMapTypes.push(CAPA_CIUDADES); 
+ 	//map.overlayMapTypes.push(CAPA_CAMINOS); 
 
  	if(localStorage.getItem("way"))
  		initialize(map);
